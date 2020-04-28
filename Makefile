@@ -1,8 +1,8 @@
 CC=gcc
 BIN=./bin
-CFLAGS=-Wall -g -pthread -Werror
+CFLAGS=-Wall -g -pthread -lm
 
-PROG=sig_receiver sig_sender
+PROG=glob ph philo buf peluquero sem_open sem_wait sem_post sem_unlink sem_getvalue sig_sender sig_receiver
 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
@@ -17,4 +17,4 @@ $(BIN)/%: %.c
 
 .PHONY: clean
 clean:
-	rm -f $(BIN)/sig_*
+	rm -f $(BIN)/glob $(BIN)/ph $(BIN)/philo $(BIN)/buf $(BIN)/peluquero $(BIN)/sem_* $(BIN)/sig_*
