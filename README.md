@@ -25,7 +25,7 @@ Responder:
 
 ## Ejercicio 2
 
-El programa `glob.c` crea dos hilos que incrementan repetidamente la variable global `glob`. Esto lo realizan copiando primero el valor de `glob` en una variable automática (local) del hilo, luego incrementando el valor de la variable local, y finalmente copiando el nuevo valor en `glob`. Cada hilo incrementa `glob` el número de veces indicado en la línea de comandos.
+El programa `glob.c` crea dos hilos que incrementan repetidamente la variable global `glob` el número de veces indicado en la línea de comandos.
 
 1. Compilar y ejecutar el programa, probando valores hasta que se encuentre una _condición de carrera_. ¿Por qué ocurre esta situación de carrera? ¿Cómo se podría evitar?
 2. ¿Por qué al pasar un valor pequeño como parámetro el resultado es correcto?
@@ -64,7 +64,7 @@ Responder:
 
 ## Ejercicio 4
 
-El programa `buf.c` implementa un ejemplo del problema del productor-consumidor, haciendo uso de un _buffer limitado_. El programa no utiliza mecanismos de sincronización para el acceso al _buffer_. Esto puede ocasionar problemas, por ejemplo una condición de carrera. Modificar el programa para sincronizar el acceso al recurso compartido (el _buffer_) por parte de los hilos productor y consumidor, empleando semáforos y _mutexs_. En este ejercicio, y en los que siguen, crear los _mutexs_ necesarios con la funcion `pthread_mutex_init()`.
+El programa `buf.c` implementa un ejemplo de productor-consumidor haciendo uso de un _buffer limitado_. El programa no utiliza mecanismos de sincronización para el acceso a los recursos compartidos. Esto puede ocasionar problemas, como por ejemplo condiciones de carrera. Modificar el programa para sincronizar los accesos a los recursos compartidos, empleando semáforos y _mutexs_. En este ejercicio y en los que siguen, crear los _mutexs_ con la funcion `pthread_mutex_init()`.
 
 Responder:
 
@@ -74,9 +74,9 @@ Responder:
 
 El programa `philo.c` implementa un ejemplo del problema de la _cena de los filósofos_. Durante la ejecución del programa puede ocurrir una condición de carrera.
 
-1. Describire la condición de carrera que puede ocurrir durante la ejecución.
+1. Describir la condición de carrera que puede ocurrir durante la ejecución del programa.
 
-2. Modificar el programa para evitar esta condición mediante el uso de semáforos y mutexes.
+2. Evitar la condición de carrera mediante el uso de semáforos y mutexes.
 
 3. Agregar también una solución para evitar el _bloqueo mutuo_ o _abrazo mortal_. Explicarla.
 
@@ -142,19 +142,11 @@ $ bin/ph 4
 completion time = 17.866878
 ```
 
-Dos consideraciones:
+Tener en cuenta:
 
+- Para evitar la pérdida de claves es necesario emplear _exclusión mutua_, durante las operaciones _put_ y _get_.
 - El tiempo total de ejecución es aproxidamente el mismo que para el caso de dos hilos. Sin embargo, se realizó casi el doble de operaciones _get_, lo que indica que se esta obteniendo una buena paralelización.
 - Más claves se han perdido. Es posible, sin embargo, que en una ejecución particular se pierdan más o menos claves, o incluso que no se pierda ninguna.
-
-Para evitar la pérdida de claves, es necesario emplear _exclusión mutua_, durante las operaciones _put_ y _get_. Las funciones a utilizar son:
-
-```bash
-pthread_mutex_t lock;     // declare a lock
-pthread_mutex_init(&lock, NULL);   // initialize the lock
-pthread_mutex_lock(&lock);  // acquire lock
-pthread_mutex_unlock(&lock);  // release lock
-```
 
 Se pide:
 
