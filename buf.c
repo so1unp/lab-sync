@@ -17,11 +17,8 @@
 // Borra la pantalla.
 #define clear() printf("\033[H\033[J")
 
-// Mutex para sincronizar el acceso a la pantalla
-static pthread_mutex_t screen = PTHREAD_MUTEX_INITIALIZER;
-
-static void* writer(void*);
-static void* reader(void*);
+static void* producer(void*);
+static void* consumer(void*);
 static void setup_draw(void);
 static void draw(int, int, int);
 
@@ -32,53 +29,56 @@ int *buffer;
 int out = 0; // Indice del consumidor.
 int in = 0;  // indice del productor.
 
-// Mutex para utilizar en la sincronización.
-pthread_mutex_t mutex;
+// Productor y consumidor duermen un número aleatorio en [0, wait_prod] y
+// [0, wait_cons] respectivamente.
+int wait_prod;
+int wait_cons;
 
-// Puntero a un buffer donde se almacena que leyo el consumidor.
+// Buffer donde se almacena que leyo el consumidor.
 int *reader_results;
 
 /* Productor */
-static void* writer(void *p) 
+static void* producer(void *p) 
 {
-    int item = 0;  // item a producir
-    int num = 0;   // cantidad de items producidos
+    int item = 0;  // Item a producir.
+    int num = 0;   // Cantidad de items producidos.
     
-    while (num < counter) {
-        // Agrega un item al buffer
+    while (num++ < counter) {
+        // Agrega un item al buffer.
         buffer[in] = item;
         draw(6, in, item);
 
-        // Valor del proximo item
+        // Valor del proximo item.
         item = item + 1;
-        // Indice del buffer para el proximo item
+
+        // Indice del buffer para el proximo item.
         in = (in + 1) % bufsize; 
 
-        num++;
-
-        sleep(rand() % 3);
+        sleep(rand() % wait_prod);
     }
     
     pthread_exit(0);
 }
 
 /* Consumidor */
-static void* reader(void *p) 
+static void* consumer(void *p) 
 {
     int num = 0;
     
     while (num < counter) {
-        // Lee un item del buffer
+        // Lee un item del buffer.
         int item = buffer[out];
+
+        // Actualiza el indicador en pantalla.
         draw(7, out, item);
 
-        reader_results[num] = item;
+        // Agrega item en la lista de leidos.
+        reader_results[num++] = item;
 
-        // Indice del próximo elemento
+        // Indice del próximo elemento.
         out = (out + 1) % bufsize;
-        num++;
 
-        sleep(rand() % 3);
+        sleep(rand() % wait_cons);
     }
     
     pthread_exit(0);
@@ -99,15 +99,12 @@ static void setup_draw(void)
 
     xy(6,10), printf("^");
     xy(7,10), printf("^");
-
     xy(9,1), fflush(stdout);
 }
 
 /* Dibuja el símbolo ^ y el valor producido si es el productor. */
 static void draw(int w, int i, int v)
 {
-    pthread_mutex_lock(&screen);
-
     xy(w, 10), printf("\033[K");
     xy(w, 10+(i*4));
     printf("^");
@@ -116,25 +113,27 @@ static void draw(int w, int i, int v)
         printf("%d",v);
     }
     xy(6,1), fflush(stdout);
-    
-    pthread_mutex_unlock(&screen);
 }
 
 int main(int argc, char** argv) 
 {
     int i;
-    pthread_t writer_t;
-    pthread_t reader_t;
+    pthread_t producer_t, consumer_t;
 
-    if (argc != 3) {
-        fprintf(stderr, "Uso: %s bufsize items\n", argv[0]);
-        fprintf(stderr, "\tbufsize:\ttamaño del búfer.\n");
-        fprintf(stderr, "\titems:\tnúmero de items a producir/consumir.\n");
+    // Controla argumentos.
+    if (argc != 5) {
+        fprintf(stderr, "Uso: %s bufsize items wait-prod wait-cons\n", argv[0]);
+        fprintf(stderr, "\tbufsize: tamaño del búfer.\n");
+        fprintf(stderr, "\titems: número de items a producir/consumir.\n");
+        fprintf(stderr, "\twait-prod: número de segundos que espera el productor.\n");
+        fprintf(stderr, "\twait-cons: número de segundos que espera el consumidor.\n");
         exit(EXIT_FAILURE);
     }
 
-    // Borra la pantalla
-    clear();
+    // Inicializa semilla para números pseudo-aleatorios.
+    srand(getpid());
+
+    clear();  // Borra la pantalla.
 
     // Tamaño del buffer.
     bufsize = atoi(argv[1]);    
@@ -150,7 +149,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    printf("Tamaño del búfer: %d\n", bufsize);
+    printf("Tamaño del buffer: %d\n", bufsize);
 
     // Cantidad de items a producir.
     counter = atoi(argv[2]);
@@ -159,31 +158,40 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+    wait_prod = atoi(argv[3]);
+    if (wait_prod <= 0) {
+        fprintf(stderr, "wait-prod tiene que ser mayor que cero.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    wait_cons = atoi(argv[4]);
+    if (wait_cons <= 0) {
+        fprintf(stderr, "cons-wait tiene que ser mayor que cero.\n");
+        exit(EXIT_FAILURE);
+    }
+
     printf("Items a producir/consumir: %d\n", counter);
 
     // Reserva memoria para guardar lo que lee el consumidor.
     reader_results = (int*) malloc(sizeof(int)*counter);
 
-    // Imprime en pantalla datos iniciales
-    setup_draw();
+    setup_draw();  // Imprime en pantalla datos iniciales.
     
-    // Crea el productor
-    pthread_create(&writer_t, NULL, writer, NULL); 
-    // Crea el consumidor
-    pthread_create(&reader_t, NULL, reader, NULL); 
+    // Crea el productor.
+    pthread_create(&producer_t, NULL, producer, NULL); 
+    // Crea el consumidor.
+    pthread_create(&consumer_t, NULL, consumer, NULL); 
 
-    // Espera a que ambos hilos finalicen
-    pthread_join(reader_t, NULL);  
-    pthread_join(writer_t, NULL);
+    // Espera a que los hilos finalicen.
+    pthread_join(producer_t, NULL);  
+    pthread_join(consumer_t, NULL);
 
-    xy(9,1);
-    
-    // Imprime en pantalla lo que leyó el consumidor
-    printf("Consumidor leyo: ");
+    // Imprime en pantalla lo que leyó el consumidor.
+    xy(9,1), printf("Consumidor leyo: ");
     for (i = 0; i < counter; i++) {
         printf("%d ", reader_results[i]);
     }
     printf("\n");
     
-    pthread_exit(0);
+    exit(EXIT_SUCCESS);
 }
