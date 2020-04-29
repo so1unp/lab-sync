@@ -30,11 +30,8 @@ Responder:
 Ejercicio 2
 
 El programa glob.c crea dos hilos que incrementan repetidamente la
-variable global glob. Esto lo realizan copiando primero el valor de glob
-en una variable automática (local) del hilo, luego incrementando el
-valor de la variable local, y finalmente copiando el nuevo valor en
-glob. Cada hilo incrementa glob el número de veces indicado en la línea
-de comandos.
+variable global glob el número de veces indicado en la línea de
+comandos.
 
 1.  Compilar y ejecutar el programa, probando valores hasta que se
     encuentre una condición de carrera. ¿Por qué ocurre esta situación
@@ -79,18 +76,22 @@ finalmente se lo elimina.
 Responder:
 
 1.  ¿Qué es lo que sucede con el proceso que ejecuta sem_wait en el
-    segundo comando?
+    segundo comando del ejemplo?
 
 Ejercicio 4
 
-El programa buf.c implementa un ejemplo del problema del
-productor-consumidor, haciendo uso de un buffer limitado. El programa no
-utiliza mecanismos de sincronización para el acceso al buffer. Esto
-puede ocasionar problemas, por ejemplo una condición de carrera.
-Modificar el programa para sincronizar el acceso al recurso compartido
-(el buffer) por parte de los hilos productor y consumidor, empleando
-semáforos y mutexs. En este ejercicio, y en los que siguen, crear los
-mutexs necesarios con la funcion pthread_mutex_init().
+El programa buf.c implementa un ejemplo de productor-consumidor haciendo
+uso de un buffer limitado. El programa no utiliza mecanismos de
+sincronización para el acceso a los recursos compartidos. Esto puede
+ocasionar problemas, como por ejemplo condiciones de carrera. Modificar
+el programa para sincronizar los accesos a los recursos compartidos,
+empleando semáforos y mutexs. En este ejercicio y en los que siguen,
+crear los mutexs con la funcion pthread_mutex_init().
+
+Responder:
+
+1.  Dar un ejemplo real de un problema que siga el patrón del
+    productor-consumidor.
 
 Ejercicio 5
 
@@ -98,14 +99,17 @@ El programa philo.c implementa un ejemplo del problema de la cena de los
 filósofos. Durante la ejecución del programa puede ocurrir una condición
 de carrera.
 
-1.  Describire la condición de carrera que puede ocurrir durante la
-    ejecución.
+1.  Describir la condición de carrera que puede ocurrir durante la
+    ejecución del programa.
 
-2.  Modificar el programa para evitar esta condición mediante el uso de
-    semáforos y mutexes.
+2.  Evitar la condición de carrera mediante el uso de semáforos y
+    mutexes.
 
 3.  Agregar también una solución para evitar el bloqueo mutuo o abrazo
     mortal. Explicarla.
+
+4.  Dar un ejemplo real de una situación que se pueda modelar como un
+    problema de este tipo.
 
 Ejercicio 6
 
@@ -133,12 +137,12 @@ generar una salida similar a la siguiente:
     0: 1 keys missing
     completion time = 15.689165
 
-Cada hilo ejecuta dos fases. En la primera, almacena claves en la tabla,
-y en la segunda fase trata de recuperar dichas claves de la tabla. La
-salida del programa indica cuanto tiempo duro cada fase para cada hilo.
-La última linea ("completion time") indica el tiempo total de ejecución
-del programa. En la salida de ejemplo anterior, el programa ejecutó
-durante aproximadamente 16 segundos.
+Cada hilo ejecuta dos fases. En la primera, almacena claves en la tabla
+hash y en la segunda fase trata de recuperar dichas claves. La salida
+indica cuanto tiempo duro cada fase en cada hilo. La última linea
+("completion time") indica el tiempo total de ejecución del programa. En
+la salida de ejemplo anterior, el programa ejecutó durante
+aproximadamente 16 segundos.
 
 Por ejemplo, si ejecutaramos nuevamente el programa, pero con un único
 hilo:
@@ -180,8 +184,10 @@ Esto empeora cuando incrementamos el número de hilos:
     0: 21 keys missing
     completion time = 17.866878
 
-Dos consideraciones:
+Tener en cuenta:
 
+-   Para evitar la pérdida de claves es necesario emplear exclusión
+    mutua, durante las operaciones put y get.
 -   El tiempo total de ejecución es aproxidamente el mismo que para el
     caso de dos hilos. Sin embargo, se realizó casi el doble de
     operaciones get, lo que indica que se esta obteniendo una buena
@@ -189,14 +195,6 @@ Dos consideraciones:
 -   Más claves se han perdido. Es posible, sin embargo, que en una
     ejecución particular se pierdan más o menos claves, o incluso que no
     se pierda ninguna.
-
-Para evitar la pérdida de claves, es necesario emplear exclusión mutua,
-durante las operaciones put y get. Las funciones a utilizar son:
-
-    pthread_mutex_t lock;     // declare a lock
-    pthread_mutex_init(&lock, NULL);   // initialize the lock
-    pthread_mutex_lock(&lock);  // acquire lock
-    pthread_mutex_unlock(&lock);  // release lock
 
 Se pide:
 
