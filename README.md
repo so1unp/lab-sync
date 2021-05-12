@@ -1,29 +1,8 @@
-# Laboratorio 6 - Señales, Concurrencia y Sincronización
+# Laboratorio 6 - Concurrencia y Sincronización
 
 :bulb: Las respuestas a las preguntas en los ejercicios pueden incluirlas en un archivo de texto con el nombre `respuestas.txt`.
 
-:date: Fecha de entrega: 
-
 ## Ejercicio 1
-
-Completar los programas `sig_sender.c` y `sig_receiver.c`:
-
-* `sig_sender.c`: Envía la señal indicada a un proceso.
-* `sig_receiver.c`: Espera por la recepción de señales. Por cada señal recibida imprime el identificador y una descripción de la misma.
-
-Utilizar las siguientes funciones y llamadas al sistema:
-
-* [`kill()`](http://man7.org/linux/man-pages/man2/kill.2.html): envía una señal a un proceso.
-* [`signal()`](http://man7.org/linux/man-pages/man2/signal.2.html): permite especificar un handler.
-* [`pause()`](http://man7.org/linux/man-pages/man2/pause.2.html): espera a recibir una señal.
-* [`strsignal()`](http://man7.org/linux/man-pages/man3/strsignal.3.html): retorna un puntero a una cadena con la descripción de la señal indicada.
-* El archivo de cabecera `signal.h` incluye la constante `NSIG`, igual a la cantidad de señales del sistema más uno.
-
-Responder:
-
-1. ¿Cuáles son las dos señales que no se pueden "atrapar"? ¿Por qué?
-
-## Ejercicio 2
 
 El programa `glob.c` crea dos hilos que incrementan repetidamente la variable global `glob` el número de veces indicado en la línea de comandos.
 
@@ -31,7 +10,7 @@ El programa `glob.c` crea dos hilos que incrementan repetidamente la variable gl
 2. ¿Por qué al pasar un valor pequeño como parámetro el resultado es correcto?
 3. Evitar la condición de carrera mediante el uso de un _mutex_ (`pthread_mutex_t`). Utilizar un _mutex_ inicializado estáticamente, con `PTHREAD_MUTEX_INITIALIZER`. Para tomar y liberar el _mutex_, usar las funciones `pthread_mutex_lock()` y `pthread_mutex_unlock()` respectivamente.
 
-## Ejercicio 3
+## Ejercicio 2
 
 Completar los siguientes programas:
 
@@ -62,7 +41,7 @@ Responder:
 
 1. ¿Qué es lo que sucede con el proceso que ejecuta `sem_wait` en el segundo comando del ejemplo?
 
-## Ejercicio 4
+## Ejercicio 3
 
 El programa `buf.c` implementa un ejemplo de productor-consumidor haciendo uso de un _buffer limitado_. El programa no utiliza mecanismos de sincronización para el acceso a los recursos compartidos. Esto puede ocasionar problemas, como por ejemplo condiciones de carrera. Modificar el programa para sincronizar los accesos a los recursos compartidos, empleando semáforos y _mutexs_. En este ejercicio y en los que siguen, crear los _mutexs_ con la funcion `pthread_mutex_init()`.
 
@@ -70,7 +49,7 @@ Responder:
 
 1. Dar un ejemplo real de un problema que siga el patrón del productor-consumidor.
 
-## Ejercicio 5
+## Ejercicio 4
 
 El programa `philo.c` implementa un ejemplo del problema de la _cena de los filósofos_. Durante la ejecución del programa puede ocurrir una condición de carrera.
 
@@ -82,7 +61,7 @@ El programa `philo.c` implementa un ejemplo del problema de la _cena de los fil�
 
 4. Dar un ejemplo real de una situación que se pueda modelar como un problema de este tipo.
 
-## Ejercicio 6
+## Ejercicio 5
 
 Modificado de: https://pdos.csail.mit.edu/6.828/2017/homework/lock.html
 
@@ -155,7 +134,7 @@ Se pide:
 3. Modificar el código para que las operaciones _get_ puedan ejecutarse en paralelo. (Tip: ¿Es necesario utilizar exclusión mútua al realizar una operación _get_?)
 4. Modificar el código para que algunas de las operaciones _put_ puedan ejecutar en paralelo.
 
-## Ejercicio 7 (Opcional)
+## Ejercicio 6 (Opcional)
 
 Un problema clásico de IPC es el problema del peluquero dormido. Una peluquería tiene *n* peluqueros, y *m* sillas donde los clientes esperan su turno. Si no hay clientes, los peluqueros duermen (se _bloquean_). Cuando arriba un cliente, alguno de los peluqueros se despierta, y realiza el corte de pelo. Si todos los peluqueros estuvieran ocupados, y hubiera sillas disponibles, el cliente se sienta a esperar su turno (es decir, se _bloquea_ a la espera de su turno). Caso contrario, se retira. Implementar en `peluquero.c` un ejemplo de este problema. Emplear semáforos para manejar **sincronización** y _mutexs_ para garantizar la **exclusión mutua**.
 
