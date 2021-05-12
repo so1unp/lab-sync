@@ -2,7 +2,7 @@ CC=gcc
 BIN=./bin
 CFLAGS=-Wall -g -pthread -lm
 
-PROG=glob ph philo buf peluquero sem_open sem_wait sem_post sem_unlink sem_getvalue sig_sender sig_receiver
+PROG=glob ph philo buf peluquero sem_open sem_wait sem_post sem_unlink sem_getvalue 
 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
