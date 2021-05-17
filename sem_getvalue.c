@@ -19,16 +19,16 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    sem_open();
-
+    // COMPLETAR: abrir el semaforo
     if (semaphore == SEM_FAILED) {
-        perror("sem_open");
+        perror(?);
         exit(EXIT_FAILURE);
     }
 
 
-    if (sem_getvalue() == -1) {
-        perror("sem_open");
+    // COMPLETAR: obtener el valor del semáforo
+    if (value == -1) {
+        perror(?);
         exit(EXIT_FAILURE);
     }
 

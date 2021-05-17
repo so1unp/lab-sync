@@ -16,19 +16,21 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    sem_t *sem  = sem_open();
+    // COMPLETAR: abrir el semáforo.
+    sem_t *sem = ?
 
     if (sem == SEM_FAILED) {
-        perror("sem_open");
+        perror(?);
         exit(EXIT_FAILURE);
     }
 
-    if (sem_wait() == -1) {
-        perror("sem_wait");
+    // COMPLETAR: realizar el down
+    if (? == -1) {
+        perror(?);
         exit(EXIT_FAILURE);
     }
 
-    printf("[%ld] sem_wait ok!\n", (long) getpid());
+    printf("[%ld] down ok!\n", (long) getpid());
 
     exit(EXIT_SUCCESS);
 }

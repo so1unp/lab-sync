@@ -15,10 +15,11 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    sem_t *sem = sem_open();
+    // COMPLETAR: crear el semaforo
+    sem_t *sem = ?
 
     if (sem == SEM_FAILED) {
-        perror("sem_open");
+        perror(?);
         exit(EXIT_FAILURE);
     }
 

@@ -26,7 +26,7 @@ static void *hilo(void *arg)
 int main(int argc, char *argv[])
 {
     pthread_t t1, t2;
-    int loops, s;
+    int loops;
  
     // Controla numero de argumentos.
     if (argc != 2) {
@@ -43,30 +43,26 @@ int main(int argc, char *argv[])
     }
 
     // Crea hilo t1.
-    s = pthread_create(&t1, NULL, hilo, &loops);
-    if (s != 0) {
+    if ( pthread_create(&t1, NULL, hilo, (void*) &loops) != 0 ) {
         perror("pthread_create");
     }
 
     // Crea hilo t2.
-    s = pthread_create(&t2, NULL, hilo, &loops);
-    if (s != 0) {
+    if ( pthread_create(&t2, NULL, hilo, (void*) &loops) ) {
         perror("pthread_create");
     }
 
     // Espera por el hilo t1.
-    s = pthread_join(t1, NULL);
-    if (s != 0) {
+    if ( pthread_join(t1, NULL) != 0) {
         perror("pthread_join");
     }
 
     // Espera por el hilo t2.
-    s = pthread_join(t2, NULL);
-    if (s != 0) {
+    if ( pthread_join(t2, NULL) != 0) {
         perror("pthread_join");
     }
 
-    printf("glob = %d\n", glob);
+    printf("%d\n", glob);
 
     exit(EXIT_SUCCESS);
 }

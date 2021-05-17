@@ -15,15 +15,17 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    sem_t *sem  = sem_open();
+    // COMPLETAR: abrir el semaforo.
+    sem_t *sem  = ?
 
     if (sem == SEM_FAILED) {
-        perror("sem_open");
+        perror(?);
         exit(EXIT_FAILURE);
     }
 
-    if (sem_post() == -1) {
-        perror("sem_post");
+    // COMPLETAR: realizar el down del semáforo.
+    if (?) {
+        perror(?);
         exit(EXIT_FAILURE);
     }
 

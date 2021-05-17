@@ -15,11 +15,11 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    // eliminar el semaforo
-    int r = sem_unlink();
+    // COMPLETAR: eliminar el semaforo
+    int r = ?
 
     if (r < 0) {
-        perror("sem_open");
+        perror(?);
         exit(EXIT_FAILURE);
     }
 

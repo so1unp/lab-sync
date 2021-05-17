@@ -69,7 +69,7 @@ void eat(int id)
 
     // Come durante un tiempo.
     for (i = 0, ration = 3 + rand() % 8; i < ration; i++) {
-        print(id, 40 + i * 4, "ñom");
+        print(id, 40 + i * 4, "ñam");
         sleep(1 + (rand() % segs_come));
     }
 }
@@ -115,8 +115,8 @@ int main(int argc, char* argv[])
 
     if (argc != 3) {
         fprintf(stderr, "Uso: %s segs-piensa segs-come\n", argv[0]);
-        fprintf(stderr, "\tsegs-piensa:\tmáxima cantidad de segundos que un filósofo puede estar pensando.\n");
-        fprintf(stderr, "\tsegs-come:\tmáxima cantidad de segundos que un filósofo puede estar comiendo.\n");
+        fprintf(stderr, "\tsegs-piensa:\tmáxima cantidad de segundos que puede estar pensando.\n");
+        fprintf(stderr, "\tsegs-come:\tmáxima cantidad de segundos que puede estar comiendo.\n");
         exit(EXIT_FAILURE);
     }
 
