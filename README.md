@@ -47,17 +47,17 @@ El programa `buf.c` implementa un ejemplo de productor-consumidor haciendo uso d
 
 ## Ejercicio 4
 
-El programa `philo.c` implementa un ejemplo del problema de la _cena de los filósofos_. Durante la ejecución del programa puede ocurrir una condición de carrera.
+El programa `philo.c` implementa un ejemplo del problema de la _cena de los filósofos_: 
 
 1. Describir la condición de carrera que puede ocurrir durante la ejecución del programa.
 
-2. Modificar el programa para evitar la condición de carrera mediante el uso de semáforos y mutexes.
+2. Modificar el programa para evitar la condición de carrera mediante el uso de semáforos y _mutexs_.
 
 3. Agregar también una solución para evitar el _bloqueo mutuo_ o _abrazo mortal_. Explicarla.
 
 ## Ejercicio 5 
 
-Un problema clásico de IPC es el problema del peluquero dormido. Una peluquería tiene *n* peluqueros, y *m* sillas donde los clientes esperan su turno. Si no hay clientes, los peluqueros duermen (se _bloquean_). Cuando arriba un cliente, alguno de los peluqueros se despierta, y realiza el corte de pelo. Si todos los peluqueros estuvieran ocupados, y hubiera sillas disponibles, el cliente se sienta a esperar su turno (es decir, se _bloquea_ a la espera de su turno). Caso contrario, se retira. Implementar en `peluquero.c` un ejemplo de este problema. Emplear semáforos para manejar **sincronización** y _mutexs_ para garantizar la **exclusión mutua**.
+Un problema clásico de IPC es el problema del peluquero dormido. Una peluquería tiene *n* peluqueros y *m* sillas donde los clientes esperan su turno. Si no hay clientes, los peluqueros duermen (se _bloquean_). Cuando arriba un cliente, alguno de los peluqueros se despierta y realiza el corte de pelo. Si todos los peluqueros estuvieran ocupados y hubiera sillas disponibles, el cliente se sienta a esperar su turno (se _bloquea_ a la espera de su turno). Caso contrario, se retira. Implementar en `peluquero.c` un ejemplo de este problema. Emplear semáforos para manejar **sincronización** y _mutexs_ para garantizar la **exclusión mutua**.
 
 ---
 
