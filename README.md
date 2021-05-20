@@ -12,15 +12,8 @@ El programa `glob.c` crea dos hilos que incrementan repetidamente la variable gl
 
 ## Ejercicio 2
 
-Completar los siguientes programas:
+Completar el programa `semaphores.c`, para que permita crear, eliminar, modificar y consultar el estado del semáforo indicado. Utilizar las siguientes funciones:
 
-* `sem_open.c`: crea un semáforo, con el nombre indicado como parámetro.
-* `sem_wait.c`: realiza una operación _down_ sobre el semáforo indicado.
-* `sem_post.c`: realiza una operación _up_ sobre el semáforo indicado.
-* `sem_getvalue.c`: imprime el valor del semáforo indicado.
-* `sem_unlink.c`: elimina el semáforo indicado.
-
-Utilizar las siguientes funciones:
 * [`sem_open()`](https://man7.org/linux/man-pages/man3/sem_open.3.html): abre o crea un semáforo.
 * [`sem_post()`](https://man7.org/linux/man-pages/man3/sem_post.3.html): realiza una operación up sobre el semáforo.
 * [`sem_wait()`](https://man7.org/linux/man-pages/man3/sem_post.3.html): realiza una operación down sobre el semáforo.
@@ -28,18 +21,15 @@ Utilizar las siguientes funciones:
 * [`sem_close()`](https://man7.org/linux/man-pages/man3/sem_close.3.html): cierra un semáforo.
 * [`sem_unlink()`](https://man7.org/linux/man-pages/man3/sem_unlink.3.html): elimina un semáforo del sistema.
 
-Una vez completados los programas, tendrían que poder ejecutar la siguiente serie de comandos: primero, se crea un semáforo con un valor inicial de cero. Luego, se  realiza una operación _down_, luego un _up_, y finalmente se lo elimina.
+Tendrían que poder ejecutar la siguiente serie de comandos: primero, se crea un semáforo con un valor inicial de cero. Luego, se  realiza una operación _down_, luego un _up_, y finalmente se lo elimina.
 
 ```bash
-$ sem_open /semaforo 0
-$ sem_wait /semaforo &
-$ sem_post /semaforo
-$ sem_unlink /semaforo
-
+$ ./semaphores -c semaforo 0
+$ ./semaphores -d semaforo &
+$ ./semaphores -u semaforo
+$ ./sempahores -b semaforo
+$
 ```
-Responder:
-
-1. ¿Qué es lo que sucede con el proceso que ejecuta `sem_wait` en el segundo comando del ejemplo?
 
 ## Ejercicio 3
 
