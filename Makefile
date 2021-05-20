@@ -17,4 +17,4 @@ $(BIN)/%: %.c
 
 .PHONY: clean
 clean:
-	rm -f $(BIN)/glob $(BIN)/ph $(BIN)/philo $(BIN)/buf $(BIN)/peluquero $(BIN)/sem_* $(BIN)/sig_*
+	rm -f $(BIN)/glob $(BIN)/ph $(BIN)/philo $(BIN)/buf $(BIN)/peluquero $(BIN)/sem_* $(BIN)/sig_* $(BIN)/semaphores
