@@ -1,18 +1,18 @@
 # Laboratorio 6 - Concurrencia y Sincronización
 
-:bulb: Agregar las respuestas a las preguntas de los ejercicios en un archivo de texto con el nombre `ejX.txt`.
+:bulb: Agregar las respuestas a las preguntas en un archivo de texto con el nombre del ejercicio, por ejemplo `ejercicio1.txt`.
 
 ## Ejercicio 1
 
-El programa `glob.c` crea dos hilos que incrementan repetidamente la variable global `glob` el número de veces indicado en la línea de comandos.
+El programa `glob.c` crea dos hilos que incrementan la variable global `glob` el número de veces indicado en la línea de comandos.
 
-1. Compilar y ejecutar el programa, probando valores hasta que se encuentre una _condición de carrera_. ¿Por qué ocurre esta situación de carrera? ¿Cómo se podría evitar?
+1. Compilar y ejecutar el programa, probando distintos valores hasta que se encuentre una _condición de carrera_. ¿Por qué ocurre esta situación de carrera? ¿Cómo se podría evitar?
 2. ¿Por qué al pasar un valor pequeño como parámetro el resultado es correcto?
 3. Evitar la condición de carrera mediante el uso de un _mutex_ (`pthread_mutex_t`). Utilizar un _mutex_ inicializado estáticamente, con `PTHREAD_MUTEX_INITIALIZER`. Para tomar y liberar el _mutex_, usar las funciones `pthread_mutex_lock()` y `pthread_mutex_unlock()` respectivamente.
 
 ## Ejercicio 2
 
-Completar el programa `semaphores.c`, para que permita crear, eliminar, modificar y consultar el estado del semáforo indicado. Utilizar las siguientes funciones:
+Completar el programa `semaphores.c`, para que permita crear, eliminar, modificar y consultar el estado del semáforo indicado. En este ejercicio, *tienen que crear* el semáforo con la función `sem_open()`. Utilizar las siguientes funciones:
 
 * [`sem_open()`](https://man7.org/linux/man-pages/man3/sem_open.3.html): abre o crea un semáforo.
 * [`sem_post()`](https://man7.org/linux/man-pages/man3/sem_post.3.html): realiza una operación up sobre el semáforo.
