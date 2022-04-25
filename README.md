@@ -27,7 +27,7 @@ Tendrían que poder ejecutar la siguiente serie de comandos: primero, se crea un
 $ ./semaphores -c semaforo 0
 $ ./semaphores -d semaforo &
 $ ./semaphores -u semaforo
-$ ./sempahores -b semaforo
+$ ./semaphores -b semaforo
 $
 ```
 
