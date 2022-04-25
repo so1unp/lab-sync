@@ -33,6 +33,7 @@ int in = 0;  // indice del productor.
 // [0, wait_cons] respectivamente.
 int wait_prod;
 int wait_cons;
+int rand_wait;
 
 // Buffer donde se almacena que leyo el consumidor.
 int *reader_results;
@@ -54,7 +55,8 @@ static void* producer(void *p)
         // Indice del buffer para el proximo item.
         in = (in + 1) % bufsize; 
 
-        sleep(rand() % wait_prod);
+        // Duerme
+        sleep(rand_wait == 1 ? rand() % wait_cons : wait_cons);
     }
     
     pthread_exit(0);
@@ -78,7 +80,8 @@ static void* consumer(void *p)
         // Indice del próximo elemento.
         out = (out + 1) % bufsize;
 
-        sleep(rand() % wait_cons);
+        // Duerme
+        sleep(rand_wait == 1 ? rand() % wait_cons : wait_cons);
     }
     
     pthread_exit(0);
@@ -121,12 +124,13 @@ int main(int argc, char** argv)
     pthread_t producer_t, consumer_t;
 
     // Controla argumentos.
-    if (argc != 5) {
-        fprintf(stderr, "Uso: %s bufsize items wait-prod wait-cons\n", argv[0]);
+    if (argc != 6) {
+        fprintf(stderr, "Uso: %s bufsize items wait-prod wait-cons rand\n", argv[0]);
         fprintf(stderr, "\tbufsize: tamaño del búfer.\n");
         fprintf(stderr, "\titems: número de items a producir/consumir.\n");
         fprintf(stderr, "\twait-prod: número de segundos que espera el productor.\n");
         fprintf(stderr, "\twait-cons: número de segundos que espera el consumidor.\n");
+        fprintf(stderr, "\trand: si la espera es aleatoria (1) o no (0).\n");
         exit(EXIT_FAILURE);
     }
 
@@ -167,6 +171,12 @@ int main(int argc, char** argv)
     wait_cons = atoi(argv[4]);
     if (wait_cons <= 0) {
         fprintf(stderr, "cons-wait tiene que ser mayor que cero.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    rand_wait = atoi(argv[5]);
+    if (rand_wait != 0 && rand_wait != 1) {
+        fprintf(stderr, "rand_wait debe ser 0 (no) o 1 (random).\n");
         exit(EXIT_FAILURE);
     }
 
