@@ -58,6 +58,7 @@ dkms.conf
 
 # Backup files
 *~
+*.swp
 
 # Binarios de los ejercicios
 bin/*
