@@ -1,5 +1,5 @@
 //
-// Problema de los filósofos comensales.
+// El problema de la cena de filósofos.
 //
 #include <pthread.h>
 #include <stdio.h>
