@@ -56,7 +56,7 @@ static void* producer(void *p)
         in = (in + 1) % bufsize; 
 
         // Duerme
-        sleep(rand_wait == 1 ? rand() % wait_cons : wait_cons);
+        sleep(rand_wait == 1 ? rand() % wait_prod : wait_prod);
     }
     
     pthread_exit(0);
